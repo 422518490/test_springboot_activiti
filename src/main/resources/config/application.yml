@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/work_flow?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    hikari:
+          maximum-pool-size: 30
+          idle-timeout: 30000
+          connection-test-query: select 1 from DUAL
+          auto-commit: true
+          minimum-idle: 5
+          connection-timeout: 30000
+          pool-name: rotorkHikariCP
+  activiti:
+    async-executor-activate: true
+    #设置QQ邮箱的SMTP服务器
+    mail-server-host: smtp.qq.com
+    #设置邮箱的端口
+    mail-server-port: 465
+    #默认的接收邮箱，当工作流没有设置接收邮箱的时候，会发送到默认邮箱上面
+    mail-server-default-from: 357****40@qq.com
+    #发送的邮箱用户名
+    mail-server-user-name: 357****40@qq.com
+    #开启邮箱的授权码,QQ邮箱开启SMTP服务的时候会生成
+    mail-server-password: hmxgksiukjazcbaa
+
+  #校验流程文件，默认校验resources下的processes文件夹里的流程文件
+      #check-process-definitions: false
+
+    mail-server-use-ssl: true
+    #自动更新数据库
+    database-schema-update: true
+
+server:
+  port: 8083
+
+security:
+  basic:
+    enabled: false
+  rememberme:
+    key: testkey
+
+logging:
+  level: debug

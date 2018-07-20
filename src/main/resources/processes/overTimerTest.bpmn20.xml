@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="overTimerTest" name="超时任务Test" isExecutable="true">
+    <startEvent id="start" name="start"></startEvent>
+    <userTask id="userTask1" name="用户任务1"></userTask>
+    <userTask id="userTask3" name="用户任务3"></userTask>
+    <endEvent id="end2" name="end"></endEvent>
+    <userTask id="userTask2" name="用户任务2"></userTask>
+    <endEvent id="end1" name="end"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="userTask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="userTask1" targetRef="userTask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="userTask2" targetRef="end1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="timer1" targetRef="userTask3"></sequenceFlow>
+    <serviceTask id="mailTask" name="邮件任务" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[357029540@qq.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[357029540@qq.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[activiti任务超时]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:string><![CDATA[来封邮件]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:string><![CDATA[邮件来了]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="charset">
+          <activiti:string><![CDATA[UTF-8]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="end3" name="end"></endEvent>
+    <boundaryEvent id="timer1" name="timer1" attachedToRef="userTask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>${overTime}</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow5" sourceRef="userTask3" targetRef="end2"></sequenceFlow>
+    <boundaryEvent id="timer2" name="timer2" attachedToRef="userTask3" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT60S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow7" sourceRef="mailTask" targetRef="end3"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="timer2" targetRef="mailTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_overTimerTest">
+    <bpmndi:BPMNPlane bpmnElement="overTimerTest" id="BPMNPlane_overTimerTest">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask1" id="BPMNShape_userTask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="165.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask3" id="BPMNShape_userTask3">
+        <omgdc:Bounds height="80.0" width="100.0" x="255.0" y="315.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end2" id="BPMNShape_end2">
+        <omgdc:Bounds height="28.0" width="28.0" x="400.0" y="341.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask2" id="BPMNShape_userTask2">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end1" id="BPMNShape_end1">
+        <omgdc:Bounds height="28.0" width="28.0" x="625.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailTask" id="BPMNShape_mailTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="295.5" y="495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end3" id="BPMNShape_end3">
+        <omgdc:Bounds height="28.0" width="28.0" x="447.80253541819957" y="521.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timer1" id="BPMNShape_timer1">
+        <omgdc:Bounds height="31.0" width="31.0" x="250.26130146029504" y="193.72110210806406"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timer2" id="BPMNShape_timer2">
+        <omgdc:Bounds height="31.0" width="31.0" x="292.91410016735375" y="380.4692020082449"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="120.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="580.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="625.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="281.1899184887743" y="210.7069609804069"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="315.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="355.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="355.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="312.99961269605825" y="411.93880405153607"></omgdi:waypoint>
+        <omgdi:waypoint x="334.9360242305617" y="495.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="395.5" y="535.0"></omgdi:waypoint>
+        <omgdi:waypoint x="447.80253541819957" y="535.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

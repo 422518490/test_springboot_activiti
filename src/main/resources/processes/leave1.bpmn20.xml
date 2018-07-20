@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef">
+  <process id="leave1" name="请假流程"  isExecutable="true" isClosed="false" processType="None">
+    <sequenceFlow sourceRef="start" targetRef="submitRequest" id="start-submitRequest"/>
+    <sequenceFlow sourceRef="submitRequest" targetRef="manger" id="submitRequest-manger"/>
+    <sequenceFlow sourceRef="manger" targetRef="agree_choose" id="manger-agree_choose"/>
+    <sequenceFlow sourceRef="agree_choose" targetRef="end" id="agree_choose-end"/>
+    <sequenceFlow sourceRef="agree_choose" targetRef="back_change" id="agree_choose-back_change"/>
+    <sequenceFlow sourceRef="back_change" targetRef="manger" id="back_change-manger"/>
+
+    <startEvent id="start" name="开始申请" activiti:assignee="${applyUser}"/>
+    <userTask id="submitRequest" name="提交申请" activiti:assignee="${applyUser}"/>
+    <userTask id="manger" name="主管审批" activiti:assignee="${manger}">
+      <property activiti:dueDate="${dueDate}" />
+    </userTask>
+    <exclusiveGateway id="agree_choose" name="是否同意"/>
+    <userTask id="back_change" name="重新申请" activiti:assignee="${applyUser}"/>
+    <endEvent id="end" name="结束"/>
+  </process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leave1">
+    <bpmndi:BPMNPlane bpmnElement="leave1">
+      <bpmndi:BPMNShape bpmnElement="start">
+        <omgdc:Bounds height="30.0" width="30.0" x="45.0" y="15.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end">
+        <omgdc:Bounds height="30.0" width="30.0" x="383.0" y="327.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="manger">
+        <omgdc:Bounds height="76.0" width="86.0" x="351.0" y="12.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="agree_choose">
+        <omgdc:Bounds height="30.0" width="30.0" x="388.0" y="158.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="back_change">
+        <omgdc:Bounds height="77.0" width="76.0" x="578.0" y="-7.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="submitRequest">
+        <omgdc:Bounds height="44.0" width="104.0" x="154.0" y="13.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="start-submitRequest">
+        <omgdi:waypoint x="60.0" y="30.0"/>
+        <omgdi:waypoint x="206.0" y="35.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="submitRequest-manger">
+        <omgdi:waypoint x="206.0" y="35.0"/>
+        <omgdi:waypoint x="401.5" y="30.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="manger-agree_choose">
+        <omgdi:waypoint x="401.5" y="30.0"/>
+        <omgdi:waypoint x="403.0" y="166.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="agree_choose-end">
+        <omgdi:waypoint x="403.0" y="173.0"/>
+        <omgdi:waypoint x="398.0" y="342.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="agree_choose-back_change">
+        <omgdi:waypoint x="403.0" y="173.0"/>
+        <omgdi:waypoint x="616.0" y="31.5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="back_change-manger">
+        <omgdi:waypoint x="616.0" y="31.5"/>
+        <omgdi:waypoint x="401.5" y="30.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

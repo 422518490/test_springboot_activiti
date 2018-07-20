@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/test">
+  <process id="countersignTest" name="countersignTest" isExecutable="true">
+    <documentation>会签</documentation>
+    <startEvent id="start" name="start" activiti:initiator="${requestUser}"></startEvent>
+    <userTask id="leave_request" name="请假申请" activiti:assignee="${requestUser}">
+    </userTask>
+    <userTask id="team_approve" name="组长审批(会签)" activiti:assignee="${teamName}">
+      <extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${teamListener}"></activiti:taskListener>
+      </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${parallelUserList}" activiti:elementVariable="teamName"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <parallelGateway id="parallel_begin" name="并行审批"></parallelGateway>
+    <userTask id="hr_approve" name="人事审批" activiti:assignee="${hr}">
+    </userTask>
+    <userTask id="manger_approve" name="项目经理审批" activiti:assignee="${manger}">
+    </userTask>
+    <userTask id="department_approve" name="部门领导审批" activiti:assignee="${departmentUser}">
+    </userTask>
+    <userTask id="company_leader_approve" name="公司领导审批" activiti:assignee="${companyLeader}">
+    </userTask>
+    <endEvent id="end" name="end"></endEvent>
+    <sequenceFlow id="line1" sourceRef="start" targetRef="leave_request"></sequenceFlow>
+    <sequenceFlow id="line4" sourceRef="parallel_begin" targetRef="hr_approve"></sequenceFlow>
+    <sequenceFlow id="line5" sourceRef="parallel_begin" targetRef="manger_approve"></sequenceFlow>
+    <sequenceFlow id="line8" sourceRef="department_approve" targetRef="company_leader_approve"></sequenceFlow>
+    <sequenceFlow id="line2" sourceRef="leave_request" targetRef="team_approve"></sequenceFlow>
+    <sequenceFlow id="line3" sourceRef="team_approve" targetRef="parallel_begin"></sequenceFlow>
+    <parallelGateway id="parallel_end" name="并行结束"></parallelGateway>
+    <sequenceFlow id="line9" sourceRef="company_leader_approve" targetRef="end"></sequenceFlow>
+    <sequenceFlow id="line10" sourceRef="parallel_end" targetRef="department_approve"></sequenceFlow>
+    <sequenceFlow id="line6" sourceRef="hr_approve" targetRef="parallel_end"></sequenceFlow>
+    <sequenceFlow id="line7" sourceRef="manger_approve" targetRef="parallel_end"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_countersignTest">
+    <bpmndi:BPMNPlane bpmnElement="countersignTest" id="BPMNPlane_countersignTest">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="leave_request" id="BPMNShape_leave_request">
+        <omgdc:Bounds height="80.0" width="100.0" x="165.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="team_approve" id="BPMNShape_team_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="300.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallel_begin" id="BPMNShape_parallel_begin">
+        <omgdc:Bounds height="40.0" width="40.0" x="510.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hr_approve" id="BPMNShape_hr_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="15.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="manger_approve" id="BPMNShape_manger_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="255.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="department_approve" id="BPMNShape_department_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="795.0" y="116.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="company_leader_approve" id="BPMNShape_company_leader_approve">
+        <omgdc:Bounds height="80.0" width="100.0" x="930.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="1080.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallel_end" id="BPMNShape_parallel_end">
+        <omgdc:Bounds height="40.0" width="40.0" x="660.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="line7" id="BPMNEdge_line7">
+        <omgdi:waypoint x="573.1541218637993" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.1206896551724" y="165.1206896551724"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line6" id="BPMNEdge_line6">
+        <omgdi:waypoint x="580.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="677.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="679.7932692307693" y="135.20673076923077"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line5" id="BPMNEdge_line5">
+        <omgdi:waypoint x="530.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="255.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line4" id="BPMNEdge_line4">
+        <omgdi:waypoint x="530.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line10" id="BPMNEdge_line10">
+        <omgdi:waypoint x="699.4424242424243" y="155.55757575757576"></omgdi:waypoint>
+        <omgdi:waypoint x="795.0" y="155.84802431610942"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line9" id="BPMNEdge_line9">
+        <omgdi:waypoint x="1030.0" y="155.43859649122808"></omgdi:waypoint>
+        <omgdi:waypoint x="1080.0005385961877" y="155.8771977069841"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line8" id="BPMNEdge_line8">
+        <omgdi:waypoint x="895.0" y="155.62962962962962"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="155.37037037037038"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line3" id="BPMNEdge_line3">
+        <omgdi:waypoint x="400.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line2" id="BPMNEdge_line2">
+        <omgdi:waypoint x="265.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line1" id="BPMNEdge_line1">
+        <omgdi:waypoint x="120.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

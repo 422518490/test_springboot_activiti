@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/test">
+  <process id="serviceTest" name="serviceTest" isExecutable="true">
+    <endEvent id="end" name="end"/>
+    <sequenceFlow sourceRef="start" targetRef="task1" id="start-task1"/>
+    <sequenceFlow sourceRef="task2" targetRef="end" id="task2-end"/>
+    <sequenceFlow sourceRef="task1" targetRef="task2" id="task1-task2"/>
+    <serviceTask id="task1" name="任务1" activiti:delegateExpression="${serviceTaskService}"/>
+    <serviceTask id="task2" name="任务2" activiti:delegateExpression="${serviceTaskService}"/>
+
+    <startEvent id="start" name="start"/>
+  </process>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane>
+      <bpmndi:BPMNShape bpmnElement="task2">
+        <omgdc:Bounds height="71.0" width="83.0" x="427.0" y="55.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end">
+        <omgdc:Bounds height="48.0" width="48.0" x="660.0" y="68.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="task1">
+        <omgdc:Bounds height="48.0" width="120.0" x="210.0" y="65.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="start">
+        <omgdc:Bounds height="48.0" width="48.0" x="39.0" y="61.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

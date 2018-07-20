@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef">
+  <process id="overtimer" name="超时流程"  isExecutable="true" isClosed="false" processType="None">
+    <startEvent id="startEvent1" name="start"></startEvent>
+    <userTask id="userTask1" name="任务1"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startEvent1" targetRef="userTask1"></sequenceFlow>
+
+    <userTask id="userTask2" name="任务2"></userTask>
+    <sequenceFlow id="flow2" sourceRef="userTask1" targetRef="userTask2"></sequenceFlow>
+
+    <boundaryEvent id="boundaryTimer1" name="Timer" attachedToRef="userTask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT60S</timeDuration>
+        <!--
+        确定的时间，触发事件的时间
+        <timeDate>2011-03-11T12:13:14</timeDate>
+        -->
+        <!--
+        P is the duration designator (for period) placed at the start of the duration representation.
+        Y is the year designator that follows the value for the number of years.
+        M is the month designator that follows the value for the number of months.
+        W is the week designator that follows the value for the number of weeks.
+        D is the day designator that follows the value for the number of days.
+        T is the time designator that precedes the time components of the representation.
+          H is the hour designator that follows the value for the number of hours.
+          M is the minute designator that follows the value for the number of minutes.
+          S is the second designator that follows the value for the number of seconds.
+        P[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]
+        等待10天
+        <timeDuration>P10D</timeDuration>
+        -->
+        <!--
+        重复3次，每次间隔10小时
+        <timeCycle>R3/PT10H</timeCycle>
+        -->
+        <!--
+        每5分钟执行一次
+        <timeCycle>0 0/5 * * * ?</timeCycle>
+        -->
+      </timerEventDefinition>
+    </boundaryEvent>
+
+    <endEvent id="endEvent1" name="End"></endEvent>
+
+    <sequenceFlow id="flow3" sourceRef="userTask2" targetRef="endEvent1"></sequenceFlow>
+
+    <userTask id="userTask3" name="任务3"></userTask>
+
+    <sequenceFlow id="flow4" sourceRef="boundaryTimer1" targetRef="userTask3"></sequenceFlow>
+    <endEvent id="endEvent2" name="End"></endEvent>
+    <sequenceFlow id="flow5" sourceRef="userTask3" targetRef="endEvent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane>
+      <bpmndi:BPMNShape bpmnElement="userTask1">
+        <omgdc:Bounds height="70.0" width="93.0" x="207.0" y="51.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask2">
+        <omgdc:Bounds height="48.0" width="120.0" x="193.0" y="198.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane>
+      <bpmndi:BPMNShape bpmnElement="userTask2">
+        <omgdc:Bounds height="48.0" width="120.0" x="706.0" y="77.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent1">
+        <omgdc:Bounds height="48.0" width="48.0" x="942.0" y="78.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask1">
+        <omgdc:Bounds height="48.0" width="120.0" x="482.0" y="75.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent1">
+        <omgdc:Bounds height="48.0" width="48.0" x="346.0" y="77.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent2">
+        <omgdc:Bounds height="48.0" width="48.0" x="941.0" y="278.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask3">
+        <omgdc:Bounds height="48.0" width="120.0" x="706.0" y="274.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryTimer1">
+        <omgdc:Bounds height="48.0" width="48.0" x="521.0" y="99.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane>
+      <bpmndi:BPMNShape bpmnElement="userTask2">
+        <omgdc:Bounds height="48.0" width="120.0" x="601.0" y="317.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent1">
+        <omgdc:Bounds height="48.0" width="48.0" x="915.0" y="325.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTask1">
+        <omgdc:Bounds height="48.0" width="120.0" x="588.0" y="173.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startEvent1">
+        <omgdc:Bounds height="48.0" width="48.0" x="641.0" y="34.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEvent2">
+        <omgdc:Bounds height="48.0" width="48.0" x="325.0" y="305.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryTimer1">
+        <omgdc:Bounds height="48.0" width="48.0" x="558.0" y="175.0"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

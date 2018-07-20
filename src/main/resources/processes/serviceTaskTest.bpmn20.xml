@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="serviceTaskTest" name="serviceTaskTest" isExecutable="true">
+    <startEvent id="start" name="start"></startEvent>
+    <serviceTask id="service1" name="组长审批" activiti:delegateExpression="${serviceTaskService}"></serviceTask>
+    <parallelGateway id="parallel_begin"></parallelGateway>
+    <serviceTask id="service2" name="项目经理审批" activiti:delegateExpression="${prototypeServiceTaskService}">
+      <extensionElements>
+        <activiti:field name="param1">
+          <activiti:expression><![CDATA[${input * 2}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="param2">
+          <activiti:string><![CDATA[111111]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="service3" name="人事审批" activiti:expression="#{serviceTaskService.hr(execution)}">
+      <extensionElements>
+        <activiti:field name="param1">
+          <activiti:string><![CDATA[abc]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="param2">
+          <activiti:string><![CDATA[efg]]></activiti:string>
+        </activiti:field>
+        <activiti:executionListener event="take" delegateExpression="${bootActivitiEventListener}"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <parallelGateway id="parallel_end"></parallelGateway>
+    <serviceTask id="service4" name="公司领导审批" activiti:class="com.activiti.service.impl.LeaderServiceTask">
+      <extensionElements>
+        <activiti:field name="param1">
+          <activiti:expression><![CDATA[${input * 5}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="param2">
+          <activiti:string><![CDATA[2222]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="end" name="end"></endEvent>
+    <sequenceFlow id="line1" sourceRef="start" targetRef="service1"></sequenceFlow>
+    <sequenceFlow id="line2" sourceRef="service1" targetRef="parallel_begin"></sequenceFlow>
+    <sequenceFlow id="line3" sourceRef="parallel_begin" targetRef="service2"></sequenceFlow>
+    <sequenceFlow id="line4" sourceRef="parallel_begin" targetRef="service3"></sequenceFlow>
+    <sequenceFlow id="line5" sourceRef="service2" targetRef="parallel_end"></sequenceFlow>
+    <sequenceFlow id="line6" sourceRef="service3" targetRef="parallel_end"></sequenceFlow>
+    <sequenceFlow id="line8" sourceRef="service4" targetRef="end"></sequenceFlow>
+    <sequenceFlow id="line7" sourceRef="parallel_end" targetRef="service4"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_serviceTaskTest">
+    <bpmndi:BPMNPlane bpmnElement="serviceTaskTest" id="BPMNPlane_serviceTaskTest">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="145.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="service1" id="BPMNShape_service1">
+        <omgdc:Bounds height="80.0" width="100.0" x="240.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallel_begin" id="BPMNShape_parallel_begin">
+        <omgdc:Bounds height="40.0" width="40.0" x="424.5" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="service2" id="BPMNShape_service2">
+        <omgdc:Bounds height="80.0" width="100.0" x="510.0" y="15.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="service3" id="BPMNShape_service3">
+        <omgdc:Bounds height="80.0" width="100.0" x="510.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallel_end" id="BPMNShape_parallel_end">
+        <omgdc:Bounds height="40.0" width="40.0" x="705.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="service4" id="BPMNShape_service4">
+        <omgdc:Bounds height="80.0" width="100.0" x="825.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="990.0" y="141.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="line7" id="BPMNEdge_line7">
+        <omgdi:waypoint x="745.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="825.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line6" id="BPMNEdge_line6">
+        <omgdi:waypoint x="610.0" y="242.12121212121212"></omgdi:waypoint>
+        <omgdi:waypoint x="713.6206896551724" y="163.6206896551724"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line5" id="BPMNEdge_line5">
+        <omgdi:waypoint x="610.0" y="85.3030303030303"></omgdi:waypoint>
+        <omgdi:waypoint x="712.5471698113207" y="147.45283018867926"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line4" id="BPMNEdge_line4">
+        <omgdi:waypoint x="454.3089171974522" y="170.19108280254778"></omgdi:waypoint>
+        <omgdi:waypoint x="521.5" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line8" id="BPMNEdge_line8">
+        <omgdi:waypoint x="925.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="990.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line3" id="BPMNEdge_line3">
+        <omgdi:waypoint x="454.9761904761905" y="150.47619047619048"></omgdi:waypoint>
+        <omgdi:waypoint x="516.0" y="95.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line2" id="BPMNEdge_line2">
+        <omgdi:waypoint x="340.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="424.5" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="line1" id="BPMNEdge_line1">
+        <omgdi:waypoint x="120.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
